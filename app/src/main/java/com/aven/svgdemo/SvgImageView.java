@@ -38,9 +38,9 @@ public class SvgImageView extends ImageView{
         long timeload = System.currentTimeMillis();
         Drawable drawable;
         if (Build.VERSION.SDK_INT < 21) {
-            drawable = getResources().getDrawable(R.drawable.simple_big);
+            drawable = getResources().getDrawable(R.drawable.circle);
         } else {
-            drawable = getResources().getDrawable(R.drawable.simple_big, null);
+            drawable = getResources().getDrawable(R.drawable.circle, null);
         }
         setImageDrawable(drawable);
         Log.e("hyf", "loadDrawable = " + (System.currentTimeMillis() - timeload));

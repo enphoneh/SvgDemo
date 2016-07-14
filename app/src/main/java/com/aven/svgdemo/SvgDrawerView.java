@@ -42,18 +42,21 @@ public class SvgDrawerView extends ImageView {
         super(context);
 //        pharseSvg();
         pharseSvgFromLocal();
+//        phareCircleInLocal();
     }
 
     public SvgDrawerView(Context context, AttributeSet attrs) {
         super(context, attrs);
 //        pharseSvg();
         pharseSvgFromLocal();
+//        phareCircleInLocal();
     }
 
     public SvgDrawerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 //        pharseSvg();
         pharseSvgFromLocal();
+//        phareCircleInLocal();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -61,6 +64,7 @@ public class SvgDrawerView extends ImageView {
         super(context, attrs, defStyleAttr, defStyleRes);
 //        pharseSvg();
         pharseSvgFromLocal();
+//        phareCircleInLocal();
     }
 
     private void pharseSvg() {
@@ -98,10 +102,9 @@ public class SvgDrawerView extends ImageView {
 //            String path = strPath.substring(index + 1);
 //            pharsePath(color, path);
 //        }
-        int svglen = SvgDarwable.simple_big.length;
+        int svglen = SvgDarwable.circle.length;
         for(int j = 0; j < svglen; j++) {
-            int length = SvgDarwable.simple_big[j].length();
-            Log.e("hyf", "length = " + length);
+            int length = SvgDarwable.circle[j].length();
             StringBuilder sb = new StringBuilder();
             int color = 0;
             List<Float> params = new ArrayList<>();
@@ -109,7 +112,7 @@ public class SvgDrawerView extends ImageView {
             Path path = new Path();
             char preOperator = ' ';
             for (int i = 0; i < length; i++) {
-                char ch = SvgDarwable.simple_big[j].charAt(i);
+                char ch = SvgDarwable.circle[j].charAt(i);
                 switch (ch) {
                     case '@':
                         color = Color.parseColor(sb.toString());
@@ -199,6 +202,27 @@ public class SvgDrawerView extends ImageView {
         }
     }
 
+    private void phareCircleInLocal() {
+        long phaseTime = System.currentTimeMillis();
+        mCircles = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for(String circle : SvgDarwable.circle_in_circle) {
+            sb.append(circle);
+        }
+        String strCircle = sb.toString();
+        String[] singleCircle = strCircle.split("@");
+        for (String circle : singleCircle) {
+            String[] params = circle.split(" ");
+            Circle circle1 = new Circle();
+            circle1.setColor(Color.parseColor(params[0]));
+            circle1.setX((int)Float.parseFloat(params[1]));
+            circle1.setY((int)Float.parseFloat(params[2]));
+            circle1.setRadio((int)Float.parseFloat(params[3]));
+            mCircles.add(circle1);
+        }
+        Log.e("hyf", "pharseSvgFromLocal = " + (System.currentTimeMillis() - phaseTime));
+    }
+
     private int getColorIndex(String strPath) {
         for(int i = 7 ; i < 11 ; i++) {
             if(strPath.charAt(i) == '@')
@@ -215,9 +239,10 @@ public class SvgDrawerView extends ImageView {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         canvas.save();
-//        for (Circle circle:mCircles)
-//        canvas.scale(0.48f,0.48f);
-//        canvas.scale(0.8f,0.8f);
+//        for (Circle circle:mCircles) {
+//            paint.setColor(circle.getColor());
+//            canvas.drawCircle(circle.getX(),circle.getY(),circle.getRadio(),paint);
+//        }
         for(PathShape path:mPaths) {
             paint.setColor(path.getFillColor());
             canvas.drawPath(path.getPath(), paint);
